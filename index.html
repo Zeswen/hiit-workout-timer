@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HIIT Workout</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <h1 class="title">HIIT Workout</h1>
+    <p class="subtitle">
+      Every [Exercise seconds] the timer beeps to do the next exercise, every
+      [Exercise seconds * Exercise count] the timer boops so you can rest for
+      [Rest seconds].
+    </p>
+    <div class="inputs">
+      <div class="input">
+        <label for="exercise-seconds">Exercise seconds</label>
+        <input id="exercise-seconds" name="exercise-seconds" type="number" />
+      </div>
+      <div class="input">
+        <label for="exercise-count">Exercise count</label>
+        <input id="exercise-count" name="exercise-count" type="number" />
+      </div>
+      <div class="input">
+        <label for="rest-seconds">Rest seconds</label>
+        <input id="rest-seconds" name="rest-seconds" type="number" />
+      </div>
+    </div>
+    <h3 id="timer">00:00</h3>
+    <p id="rest">Not resting.</p>
+    <div class="buttons">
+      <button id="workout" onclick="handleWorkoutButtonPress()">Start</button>
+      <button id="reset" onclick="handleResetButtonPress()">Reset</button>
+    </div>
+  </body>
+</html>
