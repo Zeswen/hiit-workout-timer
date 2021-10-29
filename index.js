@@ -19,6 +19,8 @@ let timer = 0;
 let rest = false;
 let interval;
 
+const padNum = (num) => `0${parseInt(num)}`.slice(-2);
+
 const startTimer = () => {
   interval = createInterval();
   exerciseSecondsInputRef.disabled = true;
@@ -41,8 +43,6 @@ const resetTimer = () => {
   timerRef.innerHTML = "00:00";
 };
 
-const padNum = (num) => `0${parseInt(num)}`.slice(-2);
-
 const setTimerText = () => {
   const minutes = padNum(timer / 60);
   const seconds = padNum(timer % 60);
@@ -61,12 +61,12 @@ const createInterval = () =>
     if (timer % setAndRestSeconds === 0) {
       rest = false;
       restRef.innerHTML = "Not resting.";
-      boop.play();
+      beep.play();
     } else if (timer % (set * setAndRestSeconds + setSeconds) === 0) {
       rest = true;
       restRef.innerHTML = "Resting.";
       boop.play();
-    } else if (!rest && timer % exerciseSeconds === 0) {
+    } else if (!rest && timer % (set * restSeconds + exerciseSeconds) === 0) {
       beep.play();
     }
   }, 1000);
