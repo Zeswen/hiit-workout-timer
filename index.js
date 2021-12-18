@@ -52,7 +52,7 @@ const startCountdown = async () => {
 };
 
 const startTimer = async () => {
-  rest = false;
+  setRest(false);
   exerciseSecondsInputRef.disabled = true;
   exerciseCountInputRef.disabled = true;
   restSecondsInputRef.disabled = true;
@@ -71,6 +71,7 @@ const stopTimer = () => {
 
 const resetTimer = () => {
   timer = 0;
+  setRest(false);
   exerciseSecondsInputRef.disabled = false;
   exerciseCountInputRef.disabled = false;
   restSecondsInputRef.disabled = false;
