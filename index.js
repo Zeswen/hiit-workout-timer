@@ -1,19 +1,19 @@
 // Refs
-const timerRef = document.querySelector("#timer");
-const workoutRef = document.querySelector("#workout");
-const resetRef = document.querySelector("#reset");
-const restRef = document.querySelector("#rest");
+const timerRef = document.querySelector('#timer');
+const workoutRef = document.querySelector('#workout');
+const resetRef = document.querySelector('#reset');
+const restRef = document.querySelector('#rest');
 
-const exerciseSecondsInputRef = document.querySelector("#exercise-seconds");
-const exerciseCountInputRef = document.querySelector("#exercise-count");
-const restSecondsInputRef = document.querySelector("#rest-seconds");
+const exerciseSecondsInputRef = document.querySelector('#exercise-seconds');
+const exerciseCountInputRef = document.querySelector('#exercise-count');
+const restSecondsInputRef = document.querySelector('#rest-seconds');
 
-const exerciseSecondsSpanRefs = document.querySelectorAll(".exercise-seconds");
-const exerciseCountSpanRefs = document.querySelectorAll(".exercise-count");
-const restSecondsSpanRefs = document.querySelectorAll(".rest-seconds");
+const exerciseSecondsSpanRefs = document.querySelectorAll('.exercise-seconds');
+const exerciseCountSpanRefs = document.querySelectorAll('.exercise-count');
+const restSecondsSpanRefs = document.querySelectorAll('.rest-seconds');
 
-const beep = new Audio("assets/beep.mp3");
-const boop = new Audio("assets/boop.mp3");
+const beep = new Audio('assets/beep.mp3');
+const boop = new Audio('assets/boop.mp3');
 
 // Modifiable
 let exerciseSeconds = 20;
@@ -52,13 +52,12 @@ const startCountdown = async () => {
 };
 
 const startTimer = async () => {
-  setRest(false);
   exerciseSecondsInputRef.disabled = true;
   exerciseCountInputRef.disabled = true;
   restSecondsInputRef.disabled = true;
   await startCountdown();
   interval = createInterval();
-  workoutRef.innerHTML = "Stop";
+  workoutRef.innerHTML = 'Stop';
 };
 
 const stopTimer = () => {
@@ -66,7 +65,7 @@ const stopTimer = () => {
   clearInterval(countdownInterval);
   interval = null;
   countdownInterval = null;
-  workoutRef.innerHTML = "Start";
+  workoutRef.innerHTML = 'Start';
 };
 
 const resetTimer = () => {
@@ -75,7 +74,7 @@ const resetTimer = () => {
   exerciseSecondsInputRef.disabled = false;
   exerciseCountInputRef.disabled = false;
   restSecondsInputRef.disabled = false;
-  timerRef.innerHTML = "00:00";
+  timerRef.innerHTML = '00:00';
 };
 
 const setTimerText = () => {
@@ -86,7 +85,7 @@ const setTimerText = () => {
 
 const setRest = (resting) => {
   rest = resting;
-  restRef.innerHTML = resting ? "Resting." : "Not resting.";
+  restRef.innerHTML = resting ? 'Resting.' : 'Not resting.';
 };
 
 const createInterval = () => {
@@ -97,15 +96,25 @@ const createInterval = () => {
 
     const setSeconds = exerciseSeconds * exerciseCount;
     const setAndRestSeconds = setSeconds + restSeconds;
-    const set = Math.floor(timer / setAndRestSeconds);
+    const setNumber = Math.ceil(timer / setAndRestSeconds);
+    const currentSetSeconds = timer - (setNumber - 1) * setAndRestSeconds;
 
-    if (timer % setAndRestSeconds === 0) {
+    const exerciseIndex = Math.floor(currentSetSeconds / exerciseSeconds);
+
+    console.log(exerciseIndex);
+
+    const stopResting = rest && currentSetSeconds === setAndRestSeconds;
+    const startResting = !rest && currentSetSeconds === setSeconds;
+    const nextExercise =
+      !rest && currentSetSeconds === exerciseSeconds * exerciseIndex;
+
+    if (stopResting) {
       setRest(false);
       beep.play();
-    } else if (timer % (set * setAndRestSeconds + setSeconds) === 0) {
+    } else if (startResting) {
       setRest(true);
       boop.play();
-    } else if (!rest && timer % (set * restSeconds + exerciseSeconds) === 0) {
+    } else if (nextExercise) {
       beep.play();
     }
   }, 1000);
@@ -134,35 +143,35 @@ const initTexts = () => {
   exerciseCountInputRef.value = exerciseCount.toString();
   restSecondsInputRef.value = restSeconds.toString();
   exerciseSecondsSpanRefs.forEach((node) => {
-    setSpanValue(node, exerciseSeconds.toString(), "seconds");
+    setSpanValue(node, exerciseSeconds.toString(), 'seconds');
   });
   exerciseCountSpanRefs.forEach((node) => {
-    setSpanValue(node, exerciseCount.toString(), "exercises");
+    setSpanValue(node, exerciseCount.toString(), 'exercises');
   });
   restSecondsSpanRefs.forEach((node) => {
-    setSpanValue(node, restSeconds.toString(), "seconds");
+    setSpanValue(node, restSeconds.toString(), 'seconds');
   });
 };
 
 const initEventListeners = () => {
-  exerciseSecondsInputRef.addEventListener("input", (e) => {
+  exerciseSecondsInputRef.addEventListener('input', (e) => {
     const { value } = e.target;
     exerciseSeconds = Number(value);
     exerciseSecondsSpanRefs.forEach((node) =>
-      setSpanValue(node, value, "seconds")
+      setSpanValue(node, value, 'seconds')
     );
   });
-  exerciseCountInputRef.addEventListener("input", (e) => {
+  exerciseCountInputRef.addEventListener('input', (e) => {
     const { value } = e.target;
     exerciseCount = Number(value);
     exerciseCountSpanRefs.forEach((node) =>
-      setSpanValue(node, value, "exercises")
+      setSpanValue(node, value, 'exercises')
     );
   });
-  restSecondsInputRef.addEventListener("input", (e) => {
+  restSecondsInputRef.addEventListener('input', (e) => {
     const { value } = e.target;
     restSeconds = Number(value);
-    restSecondsSpanRefs.forEach((node) => setSpanValue(node, value, "seconds"));
+    restSecondsSpanRefs.forEach((node) => setSpanValue(node, value, 'seconds'));
   });
 };
 
